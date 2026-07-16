@@ -194,11 +194,14 @@
 }
 
 .delta-demo__symbol {
-  width: 116px;
-  min-height: 92px;
-  padding: 8px;
+  width: 132px;
+  min-height: 132px;
+  padding: 16px;
   border: 1px solid #d9e1ef;
   border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background:
     linear-gradient(45deg, #f9fbff 25%, transparent 25%),
     linear-gradient(-45deg, #f9fbff 25%, transparent 25%),
@@ -214,6 +217,8 @@
 }
 
 .delta-demo__symbol svg {
+  max-width: 100%;
+  max-height: 100%;
   width: 100%;
   height: auto;
   display: block;
@@ -281,7 +286,7 @@
   }
 
   .delta-demo__row {
-    grid-template-columns: 154px minmax(240px, 1.4fr) 126px 126px 100px;
+    grid-template-columns: 154px minmax(240px, 1.4fr) 142px 142px 100px;
     gap: 12px;
   }
 }
