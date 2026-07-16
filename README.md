@@ -108,6 +108,75 @@ To see what is possible with milsymbol, use the unit test documents in the docs 
 
 Milsymbol can easily be extended with new functionality. If you go to https://spatialillusions.com/unitgenerator/ you can see that it uses a modified version of milsymbol with closed-source extensions "stack-extension", "reinforced/reduced-extension", and "country flag-extension". Please contact me if you would like to use them in your project.
 
+## Delta patch
+
+This fork (`milsymbol-delta`) adds an optional Delta icon patch: 1749 SIDC icons captured from the Delta application (~20MB of icon data). The patch is opt-in — the default package export is unchanged upstream milsymbol.
+
+### Install
+
+```bash
+npm install milsymbol-delta
+```
+
+Or install directly from this fork:
+
+```bash
+npm install github:alexkolodko/milsymbol-delta
+```
+
+### ESM / Node
+
+```javascript
+import ms from "milsymbol-delta/delta";
+
+const svg = new ms.Symbol("10064500001401000000").asSVG();
+```
+
+Use `import ms from "milsymbol-delta"` when you only need standard MIL-STD/APP6 symbols.
+
+### Browser and extensions
+
+For browser extensions or script-tag usage, load the base library first, then apply the patch:
+
+```html
+<script src="dist/milsymbol.js"></script>
+<script src="dist/milsymbol-delta-patch.js"></script>
+```
+
+Or use the all-in-one patched bundle:
+
+```html
+<script src="dist/milsymbol-delta.js"></script>
+```
+
+Build the Delta bundles with `npm run bundle:delta` (after `npm run build`).
+
+### Regenerating icons
+
+The icon data was auto-generated on 2026-07-15 from Delta app icons. A human-readable SIDC catalog is in [`docs/delta_objects_2026-07-16.json`](docs/delta_objects_2026-07-16.json). Regenerating the patch requires `delta_milsymbol_icon_capture.js` (not included in this repository).
+
+### Demo page
+
+A practical browser demo for comparing the base renderer with the Delta patch is available at:
+
+- `docs/examples/delta-catalog-demo.html`
+- `examples/delta-catalog-demo/index.html`
+
+It loads the generated catalog from `docs/delta_objects_2026-07-16.json` and shows base vs patched output side by side, with search, filtering, and pagination for scanning the catalog.
+
+Serve the repository root with a simple local HTTP server after building the browser bundles:
+
+```bash
+npm run bundle
+npm run bundle:delta
+python3 -m http.server 8000
+```
+
+Then open either:
+
+- `http://localhost:8000/docs/examples/delta-catalog-demo.html`
+- `http://localhost:8000/examples/delta-catalog-demo/`
+
 ## Contact
 
 Milsymbol is created and maintained by Måns Beckman

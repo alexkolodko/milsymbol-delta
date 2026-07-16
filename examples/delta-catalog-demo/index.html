@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delta SIDC Catalog Demo</title>
+    <link rel="stylesheet" href="../../docs/examples/delta-catalog-demo.css" />
+    <script>
+      window.DELTA_DEMO_CONFIG = {
+        catalogPath: "../../docs/delta_objects_2026-07-16.json",
+        baseScripts: ["../../dist/milsymbol.js"],
+        patchedScripts: [
+          "../../dist/milsymbol.js",
+          "../../dist/milsymbol-delta-patch.js",
+        ],
+      };
+    </script>
+    <script src="../../docs/examples/delta-catalog-demo.js"></script>
+  </head>
+  <body class="delta-demo">
+    <main class="delta-demo__page" id="delta-demo">
+      <section class="delta-demo__hero">
+        <h1>Delta SIDC Catalog Demo</h1>
+        <p>
+          This example compares original milsymbol output with the Delta patch
+          for entries from the generated Delta SIDC catalog.
+        </p>
+        <p>
+          The implementation is shared with the docs-hostable page so the same
+          demo can be opened from `examples/` during local development.
+        </p>
+      </section>
+
+      <section class="delta-demo__panel" aria-label="Filters">
+        <div class="delta-demo__filters">
+          <div class="delta-demo__field">
+            <label for="delta-demo-search">Search</label>
+            <input
+              id="delta-demo-search"
+              type="search"
+              placeholder="Search SIDC, name, path, or category"
+            />
+          </div>
+
+          <div class="delta-demo__field">
+            <label for="delta-demo-group">Catalog group</label>
+            <select id="delta-demo-group"></select>
+          </div>
+
+          <div class="delta-demo__field">
+            <label for="delta-demo-geometry">Geometry</label>
+            <select id="delta-demo-geometry"></select>
+          </div>
+
+          <div class="delta-demo__field">
+            <label for="delta-demo-diff">Comparison</label>
+            <select id="delta-demo-diff">
+              <option value="all">All rows</option>
+              <option value="changed">Changed only</option>
+              <option value="same">Same only</option>
+            </select>
+          </div>
+
+          <div class="delta-demo__field">
+            <label for="delta-demo-page-size">Rows per page</label>
+            <select id="delta-demo-page-size">
+              <option value="30">30</option>
+              <option value="60" selected>60</option>
+              <option value="120">120</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="delta-demo__toolbar">
+          <div class="delta-demo__meta">
+            <div><strong id="delta-demo-stats">Loading...</strong></div>
+            <div id="delta-demo-range"></div>
+            <div id="delta-demo-status"></div>
+          </div>
+
+          <div class="delta-demo__pagination" id="delta-demo-pagination">
+            <button id="delta-demo-prev" type="button">Previous</button>
+            <span id="delta-demo-page">Page 1 of 1</span>
+            <button id="delta-demo-next" type="button">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="delta-demo__error"
+        id="delta-demo-error"
+        hidden
+        aria-live="polite"
+      ></section>
+
+      <section class="delta-demo__table" id="delta-demo-table" aria-label="Catalog comparison">
+        <div class="delta-demo__row delta-demo__header">
+          <div>SIDC</div>
+          <div>Name</div>
+          <div>Base milsymbol</div>
+          <div>Patched Delta</div>
+          <div>Status</div>
+        </div>
+        <div id="delta-demo-body"></div>
+      </section>
+
+      <section class="delta-demo__empty" id="delta-demo-empty" hidden>
+        No catalog entries match the current filters.
+      </section>
+    </main>
+  </body>
+</html>

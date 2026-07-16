@@ -1,12 +1,15 @@
 // eslint.config.js
 export default [
   {
+    ignores: ["src/delta/delta-sidc-icon-data.js"],
+  },
+  {
     rules: {
       semi: "error",
       "prefer-const": "error",
     },
     languageOptions: {
-      ecmaVersion: 6,
+      ecmaVersion: 2022,
       sourceType: "module",
     },
     plugins: {
