@@ -83,6 +83,44 @@ function getPatchedSvgMarkup(dataUri) {
   return wrapped;
 }
 
+function removeRegisteredCallback(list, callback) {
+  if (!callback || !Array.isArray(list)) return;
+  const index = list.indexOf(callback);
+  if (index !== -1) {
+    list.splice(index, 1);
+  }
+}
+
+/**
+ * Render a SIDC with Delta icon callbacks temporarily removed (base milsymbol only).
+ * Useful when the process-wide `ms` singleton has already been patched.
+ */
+export function renderWithoutDeltaPatch(ms, sidc, options) {
+  const letter = ms._iconSIDC && ms._iconSIDC.letter;
+  const number = ms._iconSIDC && ms._iconSIDC.number;
+  const prevLetter = ms._deltaLetterPatch;
+  const prevNumber = ms._deltaNumberPatch;
+
+  removeRegisteredCallback(letter, prevLetter);
+  removeRegisteredCallback(number, prevNumber);
+  ms._iconCache = {};
+
+  try {
+    if (options === undefined) {
+      return new ms.Symbol(sidc).asSVG();
+    }
+    return new ms.Symbol(sidc, options).asSVG();
+  } finally {
+    if (prevLetter && letter && letter.indexOf(prevLetter) === -1) {
+      letter.push(prevLetter);
+    }
+    if (prevNumber && number && number.indexOf(prevNumber) === -1) {
+      number.push(prevNumber);
+    }
+    ms._iconCache = {};
+  }
+}
+
 export function applyDeltaPatch(ms, options = {}) {
   const mode = options.mode ?? "all";
   const patchMissingOnly = mode === "missing-only";
@@ -92,8 +130,14 @@ export function applyDeltaPatch(ms, options = {}) {
     if (!patchMissingOnly) return true;
     return DELTA_MISSING_SIDC_SET.has(sidc);
   }
-  const DeltaOrigSymbol = ms.Symbol;
-  function DeltaSymbol(sidc, options) {
+
+  // Keep the pre-patch Symbol constructor so re-applying does not nest wrappers.
+  if (!ms._deltaBaseSymbol) {
+    ms._deltaBaseSymbol = ms.Symbol;
+  }
+  const DeltaOrigSymbol = ms._deltaBaseSymbol;
+
+  function DeltaSymbol(sidc, symbolOptions) {
     // milsymbol caches computed icon sets on the shared `ms` object itself, keyed only by
     // style/dimension/color signature (not sidc) -- so a second symbol that happens to share that
     // signature with an earlier one silently reuses the earlier icon set and never re-invokes the
@@ -112,6 +156,11 @@ export function applyDeltaPatch(ms, options = {}) {
   DeltaSymbol.prototype = DeltaOrigSymbol.prototype;
   Object.setPrototypeOf(DeltaSymbol, DeltaOrigSymbol);
   ms.Symbol = DeltaSymbol;
+
+  // Replace any previously registered Delta callbacks so importing both
+  // delta/index.js and delta/missing-only.js in one process does not stack modes.
+  removeRegisteredCallback(ms._iconSIDC.letter, ms._deltaLetterPatch);
+  removeRegisteredCallback(ms._iconSIDC.number, ms._deltaNumberPatch);
 
   // Key formats are milsymbol internals, reverse-engineered from third_party/milsymbol_delta_patched/milsymbol.js:
   // - "number" SIDCs (all Delta sidc values are this format) look icons up by functionid.substr(0,6),
@@ -139,6 +188,10 @@ export function applyDeltaPatch(ms, options = {}) {
     icons[key] = { type: "svg", svg };
     bbox[key] = { x1: 0, y1: 0, x2: 200, y2: 200 };
   }
+
+  ms._deltaLetterPatch = deltaApplyLetterSidcPatch;
+  ms._deltaNumberPatch = deltaApplyNumberSidcPatch;
+  ms._deltaPatchMode = mode;
 
   ms.addSIDCicons(deltaApplyLetterSidcPatch, "letter");
   ms.addSIDCicons(deltaApplyNumberSidcPatch, "number");

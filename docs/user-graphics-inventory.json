@@ -1,0 +1,192 @@
+{
+  "title": "Delta User Graphics (symbol-set 66)",
+  "description": "Checklist of Delta User Graphics SIDCs from delta_objects, cross-referenced with std-milsymbol-picker research (hand-made icon types) and milsymbol-delta patch coverage.",
+  "sources": {
+    "catalog": "docs/delta_objects_2026-07-16.json (КОРИСТУВАЦЬКА ГРАФІКА)",
+    "research": "std-milsymbol-picker/research (ss=66 custom keys)",
+    "patch": "src/delta/delta-sidc-icon-data.js"
+  },
+  "notes": [
+    "User Graphics is a Delta product name for symbol-set 66 — not an upload/graphic-pack feature.",
+    "std-milsymbol-picker does not implement User Graphics; it only documents ss=66 and mil-sym-ts AddCustomSymbol.",
+    "Delta catalog SIDCs use affiliation digit 6 (100666…); research catalog uses affiliation digit 1 (100166…) — same ss+entity.",
+    "Сітка / Grid (66700000) is in Delta's catalog but absent from the research dictionary dump and from the icon patch capture."
+  ],
+  "summary": {
+    "catalogCount": 14,
+    "inPatch": 13,
+    "missingFromPatch": 1,
+    "researchCustomKeys": 13
+  },
+  "entries": [
+    {
+      "sidc": "10066600001000000000",
+      "entityKey": "66100000",
+      "entityCode": "100000",
+      "en": "User Graphics -> Дорога",
+      "uk": "Користувацька графіка -> Дорога",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600001100000000",
+      "entityKey": "66110000",
+      "entityCode": "110000",
+      "en": "User Graphics -> Маршрут",
+      "uk": "Користувацька графіка -> Маршрут",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600002000000000",
+      "entityKey": "66200000",
+      "entityCode": "200000",
+      "en": "User Graphics -> Забудований район",
+      "uk": "Користувацька графіка -> Забудований район",
+      "geometry": "Polygon",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600003000000000",
+      "entityKey": "66300000",
+      "entityCode": "300000",
+      "en": "User Graphics -> Переправа, із бетонним покриттям",
+      "uk": "Користувацька графіка -> Переправа, із бетонним покриттям",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600004000000000",
+      "entityKey": "66400000",
+      "entityCode": "400000",
+      "en": "User Graphics -> Район тилового забезпечення",
+      "uk": "Користувацька графіка -> Район тилового забезпечення",
+      "geometry": "Polygon",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600005000000000",
+      "entityKey": "66500000",
+      "entityCode": "500000",
+      "en": "User Graphics -> Місце зведення військового мосту",
+      "uk": "Користувацька графіка -> Місце зведення військового мосту",
+      "geometry": "Polygon",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600006005000000",
+      "entityKey": "66600500",
+      "entityCode": "600500",
+      "en": "User Graphics -> Геометрії -> Еліпс",
+      "uk": "Користувацька графіка -> Геометрії -> Еліпс",
+      "geometry": "Polygon",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "dynamic-color",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600006099000000",
+      "entityKey": "66609900",
+      "entityCode": "609900",
+      "en": "User Graphics -> Геометрії -> Точка",
+      "uk": "Користувацька графіка -> Геометрії -> Точка",
+      "geometry": "Point",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": false
+    },
+    {
+      "sidc": "10066600007000000000",
+      "entityKey": "66700000",
+      "entityCode": "700000",
+      "en": "User Graphics -> Сітка",
+      "uk": "Користувацька графіка -> Сітка",
+      "geometry": "Unknown",
+      "inPatch": false,
+      "inMissingOnlyAllowlist": false,
+      "researchIconType": null,
+      "inUiKit": false,
+      "note": "Present in Delta catalog only; missing from research dictionary and icon capture."
+    },
+    {
+      "sidc": "10066600008001000000",
+      "entityKey": "66800100",
+      "entityCode": "800100",
+      "en": "User Graphics -> Мінні загородження -> Ряд протипіхотних мін",
+      "uk": "Користувацька графіка -> Мінні загородження -> Ряд протипіхотних мін",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": true
+    },
+    {
+      "sidc": "10066600008002000000",
+      "entityKey": "66800200",
+      "entityCode": "800200",
+      "en": "User Graphics -> Мінні загородження -> Ряд протитанкових мін",
+      "uk": "Користувацька графіка -> Мінні загородження -> Ряд протитанкових мін",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": true
+    },
+    {
+      "sidc": "10066600008003000000",
+      "entityKey": "66800300",
+      "entityCode": "800300",
+      "en": "User Graphics -> Мінні загородження -> Ряд мін змішаного типу",
+      "uk": "Користувацька графіка -> Мінні загородження -> Ряд мін змішаного типу",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": true
+    },
+    {
+      "sidc": "10066600008004000000",
+      "entityKey": "66800400",
+      "entityCode": "800400",
+      "en": "User Graphics -> Мінні загородження -> Ряд мін невизначеного типу",
+      "uk": "Користувацька графіка -> Мінні загородження -> Ряд мін невизначеного типу",
+      "geometry": "LineString",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": true
+    },
+    {
+      "sidc": "10066600009100000000",
+      "entityKey": "66910000",
+      "entityCode": "910000",
+      "en": "User Graphics -> Довільний текст",
+      "uk": "Користувацька графіка -> Довільний текст",
+      "geometry": "Point",
+      "inPatch": true,
+      "inMissingOnlyAllowlist": true,
+      "researchIconType": "static-svg",
+      "inUiKit": false
+    }
+  ]
+}

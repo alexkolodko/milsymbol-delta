@@ -184,6 +184,29 @@ Build the Delta bundles with `npm run bundle:delta` (after `npm run build`).
 
 The icon data was auto-generated on 2026-07-15 from Delta app icons. A human-readable SIDC catalog is in [`docs/delta_objects_2026-07-16.json`](docs/delta_objects_2026-07-16.json). Regenerating the patch requires `delta_milsymbol_icon_capture.js` (not included in this repository).
 
+### User Graphics (symbol-set 66)
+
+Delta’s **User Graphics** catalog (`КОРИСТУВАЦЬКА ГРАФІКА`) is symbol-set **66** — a non-standard extension, not an upload feature. Base milsymbol cannot render these SIDCs; the Delta patch covers **13 of 14** (Grid / Сітка has no captured icon).
+
+See [`docs/user-graphics.md`](docs/user-graphics.md) and [`docs/user-graphics-inventory.json`](docs/user-graphics-inventory.json) for the full checklist (research icon types from `std-milsymbol-picker`, patch coverage flags).
+
+```javascript
+import ms from "milsymbol-delta/delta";
+import {
+  DELTA_USER_GRAPHICS_SIDC_SET,
+  isUserGraphicsSidc,
+} from "./src/delta/delta-user-graphics.js";
+
+if (isUserGraphicsSidc("10066600001000000000")) {
+  new ms.Symbol("10066600001000000000").asSVG();
+}
+
+for (const sidc of DELTA_USER_GRAPHICS_SIDC_SET) {
+  // 13/14 resolve via the Delta patch; Grid remains unpatched
+  new ms.Symbol(sidc).asSVG();
+}
+```
+
 ### Demo page
 
 A practical browser demo for comparing the base renderer with the Delta patch is available at:
@@ -191,7 +214,7 @@ A practical browser demo for comparing the base renderer with the Delta patch is
 - `docs/examples/delta-catalog-demo.html`
 - `examples/delta-catalog-demo/index.html`
 
-It loads the generated catalog from `docs/delta_objects_2026-07-16.json` and shows base vs patched output side by side, with search, filtering, and pagination for scanning the catalog.
+It loads the generated catalog from `docs/delta_objects_2026-07-16.json` and shows base vs patched output side by side, with search, filtering, and pagination for scanning the catalog. Filter group **КОРИСТУВАЦЬКА ГРАФІКА** (or `?group=…`) to inspect User Graphics only.
 
 Serve the repository root with a simple local HTTP server after building the browser bundles:
 

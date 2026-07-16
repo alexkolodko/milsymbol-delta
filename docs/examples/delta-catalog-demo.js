@@ -63,6 +63,7 @@
     elements.group.addEventListener("change", function (event) {
       state.group = event.target.value;
       state.page = 1;
+      syncLocationFromState();
       applyFilters();
     });
 
@@ -115,6 +116,9 @@
     state.items = flattenCatalog(catalog);
 
     populateFilters(state.items);
+    if (state.group !== "all") {
+      elements.group.value = state.group;
+    }
     applyFilters();
     setStatus("Ready.");
   }
@@ -483,6 +487,11 @@
     if (comparison && validComparisons.has(comparison)) {
       state.diff = comparison;
     }
+
+    const group = params.get("group");
+    if (group) {
+      state.group = group;
+    }
   }
 
   function syncLocationFromState() {
@@ -492,6 +501,12 @@
       url.searchParams.delete("comparison");
     } else {
       url.searchParams.set("comparison", state.diff);
+    }
+
+    if (state.group === "all") {
+      url.searchParams.delete("group");
+    } else {
+      url.searchParams.set("group", state.group);
     }
 
     window.history.replaceState({}, "", url);
