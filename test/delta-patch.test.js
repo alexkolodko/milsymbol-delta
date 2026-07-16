@@ -8,12 +8,14 @@ const patchedSvg = new msDelta.Symbol(DELTA_SIDC).asSVG();
 
 export default {
   "delta patch": {
-    "patched SIDC includes custom data:image icon": [
-      patchedSvg.includes("data:image/svg+xml;base64"),
+    "patched SIDC differs from base rendering": [patchedSvg !== unpatchedSvg, true],
+    "patched SIDC inlines vector content": [
+      patchedSvg.includes("<g") || patchedSvg.includes("<path"),
       true,
     ],
-    "unpatched base SIDC does not include custom data:image icon": [
-      unpatchedSvg.includes("data:image/svg+xml;base64"),
+    "unpatched base SIDC does not use patched vector content": [
+      unpatchedSvg.includes("data:image/svg+xml;base64") ||
+        (unpatchedSvg.includes("<g") && patchedSvg === unpatchedSvg),
       false,
     ],
   },

@@ -1,5 +1,6 @@
 (function () {
   const config = window.DELTA_DEMO_CONFIG || {};
+  const UNDEFINED_ICON_MARKER = "m 94.8206,78.1372 c -0.4542,6.8983";
   const state = {
     items: [],
     filteredItems: [],
@@ -44,6 +45,8 @@
       currentPage: document.getElementById("delta-demo-page"),
     };
 
+    syncStateFromLocation();
+    elements.diff.value = state.diff;
     attachEvents();
     loadDemo().catch(function (error) {
       showError(error);
@@ -72,12 +75,14 @@
     elements.diff.addEventListener("change", function (event) {
       state.diff = event.target.value;
       state.page = 1;
+      syncLocationFromState();
       applyFilters();
     });
 
     elements.pageSize.addEventListener("change", function (event) {
       state.pageSize = Number(event.target.value);
       state.page = 1;
+      syncLocationFromState();
       render();
     });
 
@@ -292,6 +297,10 @@
         return diffState === state.diff;
       }
 
+      if (state.diff === "missing") {
+        return getComparison(item).missingInBase;
+      }
+
       return true;
     });
 
@@ -416,11 +425,13 @@
   function getComparison(item) {
     const base = getRenderedSymbol("base", libraries.base, item.sidc);
     const patched = getRenderedSymbol("patched", libraries.patched, item.sidc);
+    const changed = normalizeMarkup(base.svg) !== normalizeMarkup(patched.svg);
 
     return {
       base: base,
       patched: patched,
-      changed: normalizeMarkup(base.svg) !== normalizeMarkup(patched.svg),
+      changed: changed,
+      missingInBase: changed && isMissingBaseSymbol(base),
     };
   }
 
@@ -455,6 +466,35 @@
 
   function normalizeMarkup(markup) {
     return String(markup || "").replace(/\s+/g, " ").trim();
+  }
+
+  function isMissingBaseSymbol(baseResult) {
+    if (!baseResult || baseResult.error) {
+      return false;
+    }
+
+    return normalizeMarkup(baseResult.svg).includes(UNDEFINED_ICON_MARKER);
+  }
+
+  function syncStateFromLocation() {
+    const params = new URLSearchParams(window.location.search);
+    const comparison = params.get("comparison");
+    const validComparisons = new Set(["all", "changed", "missing", "same"]);
+    if (comparison && validComparisons.has(comparison)) {
+      state.diff = comparison;
+    }
+  }
+
+  function syncLocationFromState() {
+    const url = new URL(window.location.href);
+
+    if (state.diff === "all") {
+      url.searchParams.delete("comparison");
+    } else {
+      url.searchParams.set("comparison", state.diff);
+    }
+
+    window.history.replaceState({}, "", url);
   }
 
   function setStatus(message) {
