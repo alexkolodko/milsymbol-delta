@@ -53,4 +53,30 @@ export default [
       banner,
     },
   },
+  {
+    input: "delta/missing-only.js",
+    output: {
+      file: "dist/milsymbol-delta-missing-only.js",
+      format: "umd",
+      banner,
+      name: "ms",
+    },
+  },
+  {
+    input: "delta/missing-only.js",
+    output: {
+      file: "dist/milsymbol-delta-missing-only.cjs",
+      format: "cjs",
+      banner,
+      exports: "default",
+    },
+  },
+  {
+    input: "delta/missing-only-patch.js",
+    output: {
+      file: "dist/milsymbol-delta-missing-only-patch.js",
+      format: "iife",
+      banner,
+    },
+  },
 ];

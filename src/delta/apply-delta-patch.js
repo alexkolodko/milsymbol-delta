@@ -1,4 +1,7 @@
 import { DELTA_SIDC_ICON_DATA } from "./delta-sidc-icon-data.js";
+import { DELTA_MISSING_SIDC_SET } from "./delta-missing-sidc-set.js";
+
+/** @typedef {{ mode?: "all" | "missing-only" }} DeltaPatchOptions */
 
 // milsymbol invokes addSIDCicons callbacks with `this` bound to its internal _getIcons lookup
 // table, never to the Symbol instance being rendered -- so `this.options.sidc` is always
@@ -80,7 +83,15 @@ function getPatchedSvgMarkup(dataUri) {
   return wrapped;
 }
 
-export function applyDeltaPatch(ms) {
+export function applyDeltaPatch(ms, options = {}) {
+  const mode = options.mode ?? "all";
+  const patchMissingOnly = mode === "missing-only";
+
+  function shouldPatchSidc(sidc) {
+    if (!sidc || !DELTA_SIDC_ICON_DATA[sidc]) return false;
+    if (!patchMissingOnly) return true;
+    return DELTA_MISSING_SIDC_SET.has(sidc);
+  }
   const DeltaOrigSymbol = ms.Symbol;
   function DeltaSymbol(sidc, options) {
     // milsymbol caches computed icon sets on the shared `ms` object itself, keyed only by
@@ -109,8 +120,8 @@ export function applyDeltaPatch(ms) {
   // Both are registered for robustness even though Delta only ever produces "number"-format sidc.
   function deltaApplyNumberSidcPatch(icons, m1, m2, bbox) {
     const sidc = deltaCurrentSidc;
-    const dataUri = sidc && DELTA_SIDC_ICON_DATA[sidc];
-    if (!dataUri) return;
+    if (!shouldPatchSidc(sidc)) return;
+    const dataUri = DELTA_SIDC_ICON_DATA[sidc];
     const svg = getPatchedSvgMarkup(dataUri);
     const functionid = sidc.substr(10, 10);
     for (const key of [functionid.substr(0, 6), functionid.substr(0, 4) + "00"]) {
@@ -121,8 +132,8 @@ export function applyDeltaPatch(ms) {
 
   function deltaApplyLetterSidcPatch(icons, bbox) {
     const sidc = deltaCurrentSidc;
-    const dataUri = sidc && DELTA_SIDC_ICON_DATA[sidc];
-    if (!dataUri) return;
+    if (!shouldPatchSidc(sidc)) return;
+    const dataUri = DELTA_SIDC_ICON_DATA[sidc];
     const svg = getPatchedSvgMarkup(dataUri);
     const key = sidc.substr(0, 1) + "-" + sidc.substr(2, 1) + "-" + sidc.substr(4, 6);
     icons[key] = { type: "svg", svg };

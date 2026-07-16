@@ -134,6 +134,22 @@ const svg = new ms.Symbol("10064500001401000000").asSVG();
 
 Use `import ms from "milsymbol-delta"` when you only need standard MIL-STD/APP6 symbols.
 
+### Missing-only mode
+
+By default, the Delta patch replaces icons for all 1749 captured SIDCs. Use **missing-only** mode to patch only the 465 symbols that render as undefined in base milsymbol, leaving existing base icons untouched:
+
+```javascript
+import ms from "milsymbol-delta/delta/missing-only";
+
+const svg = new ms.Symbol("10064500001401000000").asSVG();
+```
+
+Regenerate the missing-SIDC allowlist after icon data changes:
+
+```bash
+npm run generate:missing-sidc
+```
+
 ### Browser and extensions
 
 For browser extensions or script-tag usage, load the base library first, then apply the patch:
@@ -147,6 +163,19 @@ Or use the all-in-one patched bundle:
 
 ```html
 <script src="dist/milsymbol-delta.js"></script>
+```
+
+For missing-only patching in the browser:
+
+```html
+<script src="dist/milsymbol.js"></script>
+<script src="dist/milsymbol-delta-missing-only-patch.js"></script>
+```
+
+Or the all-in-one missing-only bundle:
+
+```html
+<script src="dist/milsymbol-delta-missing-only.js"></script>
 ```
 
 Build the Delta bundles with `npm run bundle:delta` (after `npm run build`).

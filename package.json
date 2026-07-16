@@ -14,6 +14,11 @@
       "require": "./dist/milsymbol-delta.cjs",
       "types": "./delta/index.d.ts"
     },
+    "./delta/missing-only": {
+      "import": "./delta/missing-only.js",
+      "require": "./dist/milsymbol-delta-missing-only.cjs",
+      "types": "./delta/missing-only.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/milsymbol.js",
@@ -35,7 +40,10 @@
     "postbuild": "node --eval \"const fs = require('node:fs'); fs.writeFileSync('./dist/package.json', JSON.stringify({ type: 'commonjs' }));\"",
     "bundle": "rollup -c",
     "bundle:delta": "rollup -c rollup.delta.config.mjs",
-    "minify": "uglifyjs dist/milsymbol.development.js -o dist/milsymbol.js --comments --compress --mangle --source-map",
+    "generate:missing-sidc": "node dev/generate-delta-missing-sidc-set.mjs",
+    "minify": "npm run minify:base && npm run minify:delta",
+    "minify:base": "uglifyjs dist/milsymbol.development.js -o dist/milsymbol.js --comments --compress --mangle --source-map",
+    "minify:delta": "uglifyjs dist/milsymbol-delta-patch.js -o dist/milsymbol-delta-patch.min.js --comments --compress --mangle && uglifyjs dist/milsymbol-delta-missing-only-patch.js -o dist/milsymbol-delta-missing-only-patch.min.js --comments --compress --mangle",
     "test": "tead --coverage"
   },
   "repository": {
